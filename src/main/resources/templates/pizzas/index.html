@@ -21,8 +21,9 @@
                     <th>ID</th>
                     <th>Foto</th>
                     <th>Nome</th>
-                    <th>Descrizione</th>
+                    <th>Ingredienti</th>
                     <th>Prezzo</th>
+                    <th>Azioni</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +37,13 @@
                     <td th:text="${pizza.name}"></td>
                     <td th:text="${pizza.description}"></td>
                     <td th:text="${'€ ' + pizza.price}"></td>
+                    <td>
+                        <!-- @{...} costruisce url dinamici in Thymeleaf -->
+                        <!-- (id=&{pizza.id}) sostituisce {id} nell'url -->
+                        <a th:href="@{/pizzas/{id}(id=${pizza.id})}" class="btn btn-primary btn-sm">
+                            Dettagli
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>
