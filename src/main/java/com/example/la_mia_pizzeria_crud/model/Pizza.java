@@ -9,6 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "pizzas")
@@ -19,15 +22,19 @@ public class Pizza {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment
     private Integer id;
 
-    @Column(name = "name", nullable = false) // nome obbligatorio
+    @Column(name = "name")
+    @NotEmpty(message = "Il nome è obbligatorio")
     private String name;
 
     @Column(name = "description")
+    @NotNull(message = "La descrizione è obbligatoria")
     private String description;
 
     private String Photo; // salvo url della foto come stringa
 
-    @Column(name = "price", nullable = false) // prezzo obbligatorio
+    @Column(name = "price")
+    @NotNull(message = "Il prezzo è obbligatorio")
+    @Positive(message = "Il prezzo deve essere maggiore di zero")
     private BigDecimal price;
 
     public Integer getId() {

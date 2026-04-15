@@ -6,14 +6,18 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.la_mia_pizzeria_crud.model.Pizza;
 import com.example.la_mia_pizzeria_crud.repository.PizzaRepository;
 
 import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/pizzas")
@@ -46,6 +50,26 @@ public class PizzaController {
             return "pizzas/show";
         } else {
             // se non esiste reindirizzo alla lista
+            return "redirect:/pizzas";
+        }
+    }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+
+        model.addAttribute("pizza", new Pizza());
+        return "pizzas/create";
+    }
+
+    @PostMapping("/create")
+    public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult, Model model) {
+        // 1. controllo errori di validazione
+        if (bindingResult.hasErrors()) {
+            // se ci sono, ritorna la view del form senza salvare
+            return "pizzas/create";
+        } else {
+            // se non ci sono errrori salvo e reindirizzo
+            pizzaRepository.save(formPizza);
             return "redirect:/pizzas";
         }
     }
